@@ -59,10 +59,11 @@
       let net2Image = new Image();
       net2Image.crossOrigin = "anonymous";
       net2Image.src = net2IconSrc;
-      let enemyIconSrc = "player1.png";
+      let enemyIconSrcs = ["player1.png", "messi.png"];
+      let i = enemyIconScrs.length - 1;
       let enemyImage = new Image();
       enemyImage.crossOrigin = "anonymous";
-      enemyImage.src = enemyIconSrc;
+      enemyImage.src = enemyIconSrcs[i];
       let ballW = 50;
       let ballH = 50;
       let ballX = halfCW - ballW / 2;
@@ -251,13 +252,14 @@
         }
         if (score == 1) {
           score = 0;
-          enemyImage.src = "messi.png";
+          i += 1;
           level += 1;
         }
-        if (enemyScore == 2) {
+        if (enemyScore == 20) {
           score = 0;
           enemyScore = 0;
           level -= 1;
+          i -= 1;
         }
         drawBall();
         drawPaddle();
