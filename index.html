@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Soccer Game Project</title>
+    <style>
+      canvas#myCanvas {
+        background-color: lightGreen;
+        background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Soccer_Field_Transparant.svg/1353px-Soccer_Field_Transparant.svg.png);
+        /* background-image: url(field.png); */
+        background-size: cover;
+        background-repeat: no-repeat;
+        border: 3px solid gray;
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="myCanvas" width="600" height="600"
+      >Your browser does not support JS Canvas
+      <img
+        id="enemy"
+        src="https://o.remove.bg/downloads/c5883eb4-ab62-415e-99b2-2ec7ac54c764/download-removebg-preview.png"
+        width="200px"
+    /></canvas>
+
+    <button onclick="playGame()">play game</button>
+    <script>
+      const canvas = document.getElementById("myCanvas");
+      const CH = canvas.height;
+      const CW = canvas.width;
+      const halfCW = CW / 2;
+      const halfCH = CH / 2;
+
+      let ctx = canvas.getContext("2d");
+
+      function drawRect(x, y, w, h) {
+        ctx.fillRect(x, y, w, h);
+      }
+      let ballIconSrc =
+        "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/25d45014-8cc3-4c98-b02c-5a0cf3a55ddd/dcrauly-8b5ebd2e-2fb3-4ba0-8e58-af63f76366aa.png/v1/fill/w_1024,h_1033/soccer_ball_on_a_transparent_background__by_prussiaart_dcrauly-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTAzMyIsInBhdGgiOiJcL2ZcLzI1ZDQ1MDE0LThjYzMtNGM5OC1iMDJjLTVhMGNmM2E1NWRkZFwvZGNyYXVseS04YjVlYmQyZS0yZmIzLTRiYTAtOGU1OC1hZjYzZjc2MzY2YWEucG5nIiwid2lkdGgiOiI8PTEwMjQifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.fRZV_mHeC7TcYZVeHBbXFR-Uz22AXc8-Xay2lMU5jgU";
+      let ballImage = new Image();
+      ballImage.crossOrigin = "anonymous";
+      ballImage.src = ballIconSrc;
+      let paddleIconSrc =
+        "https://b.fssta.com/uploads/application/soccer/headshots/885.vresize.350.350.medium.14.png";
+      let paddleImage = new Image();
+      paddleImage.crossOrigin = "anonymous";
+      paddleImage.src = paddleIconSrc;
+      let netIconSrc =
+        "https://media.istockphoto.com/id/1024179336/vector/seamless-fence-pattern-connection-of-protective-grid-elements-vector.jpg?s=612x612&w=0&k=20&c=YZosvWLijPd_kvQbMK5AydUFCU9hTYfPhwzMEvGqlTo=";
+      let netImage = new Image();
+      netImage.crossOrigin = "anonymous";
+      netImage.src = netIconSrc;
+
+      let net2IconSrc =
+        "https://media.istockphoto.com/id/1024179336/vector/seamless-fence-pattern-connection-of-protective-grid-elements-vector.jpg?s=612x612&w=0&k=20&c=YZosvWLijPd_kvQbMK5AydUFCU9hTYfPhwzMEvGqlTo=";
+      let net2Image = new Image();
+      net2Image.crossOrigin = "anonymous";
+      net2Image.src = net2IconSrc;
+      let enemyIconSrc = "player1.png";
+      let enemyImage = new Image();
+      enemyImage.crossOrigin = "anonymous";
+      enemyImage.src = enemyIconSrc;
+      let ballW = 50;
+      let ballH = 50;
+      let ballX = halfCW - ballW / 2;
+      let ballY = halfCH;
+      function drawBall() {
+        ctx.drawImage(ballImage, ballX, ballY, ballW, ballH);
+      }
+      drawBall();
+      let paddleW = 80;
+      let paddleH = 80;
+      let paddleX = halfCW - paddleW / 2;
+      let paddleY = halfCH + 150;
+
+      function drawPaddle() {
+        ctx.drawImage(paddleImage, paddleX, paddleY, paddleW, paddleH);
+      }
+      drawPaddle();
+      let ballSpeedX = 3;
+      let ballSpeedY = 6;
+      let enemySpeedX = 4;
+      let enemySpeedY = 0;
+      let netW = 300;
+      let netH = 60;
+      let netX = CW / 2 - netW / 2;
+      let netY = CH - 600;
+      function drawNet() {
+        ctx.drawImage(netImage, netX, netY, netW, netH);
+      }
+      drawNet();
+
+      let net2W = 300;
+      let net2H = 60;
+      let net2X = CW / 2 - net2W / 2;
+      let net2Y = CH - 30;
+      function drawNet2() {
+        ctx.drawImage(net2Image, net2X, net2Y, net2W, net2H);
+      }
+      drawNet2();
+
+      let enemyW = 80;
+      let enemyH = 80;
+      let enemyX = 200;
+      let enemyY = 100;
+      function drawEnemy() {
+        ctx.drawImage(enemyImage, enemyX, enemyY, enemyW, enemyH);
+      }
+      drawEnemy();
+      function gameHud() {
+        ctx.font = "15px Arial";
+        ctx.fillStyle = "white";
+        ctx.fillText(
+          "Level: " +
+            level +
+            " Goals: " +
+            score +
+            " Blocks: " +
+            blocks +
+            " Enemy Score: " +
+            enemyScore,
+          140,
+          350
+        );
+      }
+
+      function paddleCollision() {
+        if (
+          ballX < paddleX + paddleW &&
+          ballX + ballW > paddleX &&
+          ballY < paddleY + paddleH &&
+          ballY + ballH > paddleY
+        ) {
+          return true;
+        }
+      }
+      function netCollision() {
+        if (
+          ballX < netX + netW &&
+          ballX + ballW > netX &&
+          ballY < netY + netH &&
+          ballY + ballH > netY
+        ) {
+          return true;
+        }
+      }
+      function net2Collision() {
+        if (
+          ballX < net2X + net2W &&
+          ballX + ballW > net2X &&
+          ballY < net2Y + net2H &&
+          ballY + ballH > net2Y
+        ) {
+          return true;
+        }
+      }
+      function enemyCollision() {
+        if (
+          ballX < enemyX + enemyW &&
+          ballX + ballW > enemyX &&
+          ballY < enemyY + enemyH &&
+          ballY + ballH > enemyY
+        ) {
+          return true;
+        }
+      }
+      let bounces = 0;
+      let enemyScore = 0;
+      let score = 0;
+      let blocks = 0;
+      let level = 1;
+      let moveRight = false;
+      let moveLeft = false;
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "ArrowRight") {
+          moveRight = true;
+        }
+        if (event.key === "ArrowLeft") {
+          moveLeft = true;
+        }
+      });
+      document.addEventListener("keyup", function (event) {
+        if (event.key === "ArrowRight") {
+          moveRight = false;
+        }
+        if (event.key === "ArrowLeft") {
+          moveLeft = false;
+        }
+      });
+      function playGame() {
+        ballX += ballSpeedX;
+        ballY += ballSpeedY;
+        enemyX += enemySpeedX;
+        enemyY += enemySpeedY;
+        if (ballX + ballW > CW) {
+          ballSpeedX *= -1;
+        }
+        if (ballX < 0) {
+          ballSpeedX *= -1;
+        }
+        if (ballY + ballH > CH) {
+          ballSpeedY *= -1;
+        }
+        if (ballY < 0) {
+          ballSpeedY *= -1;
+        }
+
+        if (enemyX + enemyW > CW) {
+          enemySpeedX *= -1;
+        }
+        if (enemyX < 0) {
+          enemySpeedX *= -1;
+        }
+        ctx.clearRect(0, 0, CW, CH);
+        if (paddleCollision()) {
+          ballSpeedX *= 1;
+          ballSpeedY *= -1;
+          blocks++;
+          console.log("Bounces: " + bounces);
+        }
+        if (netCollision()) {
+          ballSpeedX *= 1;
+          ballSpeedY *= -1;
+          ballX = CW / 2;
+          ballY = CH / 2;
+          score++;
+          console.log("Score: " + score);
+        }
+        if (net2Collision()) {
+          ballSpeedX *= 1;
+          ballSpeedY *= -1;
+          ballX = CW / 2;
+          ballY = CH / 2;
+          enemyScore++;
+          console.log("Enemy's Score: " + score);
+        }
+        if (enemyCollision()) {
+          ballSpeedX *= 1;
+          ballSpeedY *= -1;
+          blocks++;
+          console.log("Blocks: " + blocks);
+        }
+        if (moveRight && paddleX + paddleW < CW) {
+          paddleX += 10;
+        }
+        if (moveLeft && paddleX > 0) {
+          paddleX -= 10;
+        }
+        if (score == 1) {
+          score = 0;
+          enemyImage.src = "messi.png";
+          level += 1;
+        }
+        if (enemyScore == 2) {
+          score = 0;
+          enemyScore = 0;
+          level -= 1;
+        }
+        drawBall();
+        drawPaddle();
+        drawEnemy();
+        gameHud();
+        drawNet();
+        drawNet2();
+        requestAnimationFrame(playGame);
+      }
+    </script>
+  </body>
+</html>
