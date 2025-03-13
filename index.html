@@ -17,7 +17,7 @@
   </head>
 
   <body>
-    <canvas id="myCanvas" width="600" height="600"
+    <canvas id="myCanvas" width="550" height="550"
       >Your browser does not support JS Canvas
       <img
         id="enemy"
@@ -38,24 +38,20 @@
       function drawRect(x, y, w, h) {
         ctx.fillRect(x, y, w, h);
       }
-      let ballIconSrc =
-        "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/25d45014-8cc3-4c98-b02c-5a0cf3a55ddd/dcrauly-8b5ebd2e-2fb3-4ba0-8e58-af63f76366aa.png/v1/fill/w_1024,h_1033/soccer_ball_on_a_transparent_background__by_prussiaart_dcrauly-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTAzMyIsInBhdGgiOiJcL2ZcLzI1ZDQ1MDE0LThjYzMtNGM5OC1iMDJjLTVhMGNmM2E1NWRkZFwvZGNyYXVseS04YjVlYmQyZS0yZmIzLTRiYTAtOGU1OC1hZjYzZjc2MzY2YWEucG5nIiwid2lkdGgiOiI8PTEwMjQifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.fRZV_mHeC7TcYZVeHBbXFR-Uz22AXc8-Xay2lMU5jgU";
+      let ballIconSrc = "ball.png";
       let ballImage = new Image();
       ballImage.crossOrigin = "anonymous";
       ballImage.src = ballIconSrc;
-      let paddleIconSrc =
-        "https://b.fssta.com/uploads/application/soccer/headshots/885.vresize.350.350.medium.14.png";
-      let paddleImage = new Image();
-      paddleImage.crossOrigin = "anonymous";
-      paddleImage.src = paddleIconSrc;
-      let netIconSrc =
-        "https://media.istockphoto.com/id/1024179336/vector/seamless-fence-pattern-connection-of-protective-grid-elements-vector.jpg?s=612x612&w=0&k=20&c=YZosvWLijPd_kvQbMK5AydUFCU9hTYfPhwzMEvGqlTo=";
+      let ronaldoIconSrc = "ronaldo.png";
+      let ronaldoImage = new Image();
+      ronaldoImage.crossOrigin = "anonymous";
+      ronaldoImage.src = ronaldoIconSrc;
+      let netIconSrc = "net.png";
       let netImage = new Image();
       netImage.crossOrigin = "anonymous";
       netImage.src = netIconSrc;
 
-      let net2IconSrc =
-        "https://media.istockphoto.com/id/1024179336/vector/seamless-fence-pattern-connection-of-protective-grid-elements-vector.jpg?s=612x612&w=0&k=20&c=YZosvWLijPd_kvQbMK5AydUFCU9hTYfPhwzMEvGqlTo=";
+      let net2IconSrc = "net.png";
       let net2Image = new Image();
       net2Image.crossOrigin = "anonymous";
       net2Image.src = net2IconSrc;
@@ -63,31 +59,31 @@
       let enemyImage = new Image();
       enemyImage.crossOrigin = "anonymous";
       enemyImage.src = enemyIconSrc;
-      let ballW = 50;
-      let ballH = 50;
+      let ballW = 40;
+      let ballH = 40;
       let ballX = halfCW - ballW / 2;
       let ballY = halfCH;
       function drawBall() {
         ctx.drawImage(ballImage, ballX, ballY, ballW, ballH);
       }
       drawBall();
-      let paddleW = 80;
-      let paddleH = 80;
-      let paddleX = halfCW - paddleW / 2;
-      let paddleY = halfCH + 150;
+      let ronaldoW = 70;
+      let ronaldoH = 70;
+      let ronaldoX = halfCW - ronaldoW / 2;
+      let ronaldoY = halfCH + 150;
 
       function drawPaddle() {
-        ctx.drawImage(paddleImage, paddleX, paddleY, paddleW, paddleH);
+        ctx.drawImage(ronaldoImage, ronaldoX, ronaldoY, ronaldoW, ronaldoH);
       }
       drawPaddle();
-      let ballSpeedX = 3;
-      let ballSpeedY = 6;
+      let ballSpeedX = 1.5;
+      let ballSpeedY = 3;
       let enemySpeedX = 4;
-      let enemySpeedY = 0;
+      let enemySpeedY = 1;
       let netW = 300;
       let netH = 60;
       let netX = CW / 2 - netW / 2;
-      let netY = CH - 600;
+      let netY = CH - 575;
       function drawNet() {
         ctx.drawImage(netImage, netX, netY, netW, netH);
       }
@@ -102,8 +98,8 @@
       }
       drawNet2();
 
-      let enemyW = 80;
-      let enemyH = 80;
+      let enemyW = 70;
+      let enemyH = 70;
       let enemyX = 200;
       let enemyY = 100;
       function drawEnemy() {
@@ -112,7 +108,7 @@
       drawEnemy();
       function gameHud() {
         ctx.font = "15px Arial";
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "black";
         ctx.fillText(
           "Level: " +
             level +
@@ -123,16 +119,16 @@
             " Enemy Score: " +
             enemyScore,
           140,
-          350
+          300
         );
       }
 
-      function paddleCollision() {
+      function ronaldoCollision() {
         if (
-          ballX < paddleX + paddleW &&
-          ballX + ballW > paddleX &&
-          ballY < paddleY + paddleH &&
-          ballY + ballH > paddleY
+          ballX < ronaldoX + ronaldoW &&
+          ballX + ballW > ronaldoX &&
+          ballY < ronaldoY + ronaldoH &&
+          ballY + ballH > ronaldoY
         ) {
           return true;
         }
@@ -167,6 +163,50 @@
           return true;
         }
       }
+      function ronaldoEnemyCollision() {
+        if (
+          ronaldoX < enemyX + enemyW &&
+          ronaldoX + ronaldoW > enemyX &&
+          ronaldoY < enemyY + enemyH &&
+          ronaldoY + ronaldoH > enemyY
+        ) {
+          return true;
+        }
+      }
+      function ronaldoNetCollision() {
+        if (
+          ronaldoX < netX + netW &&
+          ronaldoX + ronaldoW > netX &&
+          ronaldoY < netY + netH &&
+          ronaldoY + ronaldoH > netY
+        ) {
+          return true;
+        } else if (
+          ronaldoX < net2X + net2W &&
+          ronaldoX + ronaldoW > net2X &&
+          ronaldoY < net2Y + net2H &&
+          ronaldoY + ronaldoH > net2Y
+        ) {
+          return true;
+        }
+      }
+      function enemyNetCollision() {
+        if (
+          enemyX < netX + netW &&
+          enemyX + enemyW > netX &&
+          enemyY < netY + netH &&
+          enemyY + enemyH > netY
+        ) {
+          return true;
+        } else if (
+          enemyX < net2X + net2W &&
+          enemyX + enemyW > net2X &&
+          enemyY < net2Y + net2H &&
+          enemyY + enemyH > net2Y
+        ) {
+          return true;
+        }
+      }
       let bounces = 0;
       let enemyScore = 0;
       let score = 0;
@@ -174,12 +214,20 @@
       let level = 1;
       let moveRight = false;
       let moveLeft = false;
+      let moveUp = false;
+      let moveDown = false;
       document.addEventListener("keydown", function (event) {
         if (event.key === "ArrowRight") {
           moveRight = true;
         }
         if (event.key === "ArrowLeft") {
           moveLeft = true;
+        }
+        if (event.key === "ArrowUp") {
+          moveUp = true;
+        }
+        if (event.key === "ArrowDown") {
+          moveDown = true;
         }
       });
       document.addEventListener("keyup", function (event) {
@@ -188,6 +236,12 @@
         }
         if (event.key === "ArrowLeft") {
           moveLeft = false;
+        }
+        if (event.key === "ArrowUp") {
+          moveUp = false;
+        }
+        if (event.key === "ArrowDown") {
+          moveDown = false;
         }
       });
       function playGame() {
@@ -214,8 +268,18 @@
         if (enemyX < 0) {
           enemySpeedX *= -1;
         }
+        if (enemyY + enemyH > CH) {
+          enemySpeedY *= -1;
+        }
+        if (enemyY < 0) {
+          enemySpeedY *= -1;
+        }
+        if (ronaldoEnemyCollision()) {
+          enemySpeedX *= 1;
+          enemySpeedY *= -1;
+        }
         ctx.clearRect(0, 0, CW, CH);
-        if (paddleCollision()) {
+        if (ronaldoCollision()) {
           ballSpeedX *= 1;
           ballSpeedY *= -1;
           blocks++;
@@ -230,7 +294,7 @@
           console.log("Score: " + score);
         }
         if (net2Collision()) {
-          ballSpeedX *= 1;
+          ballSpeedX *= -1;
           ballSpeedY *= -1;
           ballX = CW / 2;
           ballY = CH / 2;
@@ -243,13 +307,39 @@
           blocks++;
           console.log("Blocks: " + blocks);
         }
-        if (moveRight && paddleX + paddleW < CW) {
-          paddleX += 10;
+        if (enemyNetCollision()) {
+          enemySpeedX *= 1;
+          enemySpeedY *= -1;
         }
-        if (moveLeft && paddleX > 0) {
-          paddleX -= 10;
+        if (ballX + ballW > ronaldoX && ballX < ronaldoX + ronaldoW) {
+          // Correct any overshoot in the X-direction by snapping the ball position
+          if (ballSpeedX > 0) {
+            ballX = ronaldoX - ballW;
+          } else {
+            ballX = ronaldoX + ronaldoW;
+          }
         }
-        if (score == 1) {
+        if (ballX + ballW > enemyX && ballX < enemyX + enemyW) {
+          // Correct any overshoot in the X-direction by snapping the ball position
+          if (ballSpeedX > 0) {
+            ballX = enemyX - ballW;
+          } else {
+            ballX = enemyX + enemyW;
+          }
+        }
+        if (moveRight && ronaldoX + ronaldoW < CW) {
+          ronaldoX += 5;
+        }
+        if (moveLeft && ronaldoX > 0) {
+          ronaldoX -= 5;
+        }
+        if (moveDown && ronaldoY + ronaldoH < CH) {
+          ronaldoY += 5;
+        }
+        if (moveUp && ronaldoX > 0) {
+          ronaldoY -= 5;
+        }
+        if (score == 4) {
           score = 0;
           level += 1;
         }
